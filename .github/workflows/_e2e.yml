@@ -1,0 +1,30 @@
+name: E2E Tests
+
+on:
+  workflow_call:
+
+jobs:
+  e2e:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.1
+
+      - name: Setup JS environment
+        uses: ./.github/actions/setup-js
+        with:
+          playwright: "true"
+
+      - name: E2E tests
+        run: bun run test:e2e
+
+      - name: Upload e2e report
+        uses: actions/upload-artifact@v6
+        if: ${{ !cancelled() }}
+        with:
+          name: e2e-test-report
+          path: playwright-report/
+          retention-days: 90
