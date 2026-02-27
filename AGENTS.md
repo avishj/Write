@@ -27,11 +27,10 @@ Count is a precision text counting and visualization tool built as an Astro stat
 | `bun run dev` | Start dev server |
 | `bun run build` | Production build |
 | `bun run preview` | Preview production build |
-| `bun run test:unit` | Unit tests |
-| `bun run test:smoke` | Playwright smoke tests |
-| `bun run test:e2e` | Playwright E2E tests |
+| `bun run test:unit` | Unit tests (Vitest) |
+| `bun run test:browser` | Browser tests (Playwright) |
 | `bun run check` | TypeScript typecheck |
-| `bun run lint` | ESLint + Stylelint + markdownlint |
+| `bun run lint` | ESLint |
 
 ## Gotchas
 
