@@ -1,13 +1,13 @@
 import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
-  testDir: "./e2e",
+  testDir: "./browser",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 3 : 1,
   workers: process.env.CI ? 4 : 2,
   reporter: [["list"], ["html", { open: "never" }]],
-  timeout: 60000,
+  timeout: 60_000,
 
   use: {
     baseURL: "http://localhost:4321",
@@ -16,20 +16,14 @@ export default defineConfig({
   },
 
   projects: [
-    {
-      name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
-    },
-    {
-      name: "firefox",
-      use: { ...devices["Desktop Firefox"] },
-    },
+    { name: "chromium", use: { ...devices["Desktop Chrome"] } },
+    { name: "firefox", use: { ...devices["Desktop Firefox"] } },
   ],
 
   webServer: {
     command: "bun run preview --host --port 4321",
     url: "http://localhost:4321",
     reuseExistingServer: !process.env.CI,
-    timeout: 10000,
+    timeout: 10_000,
   },
 });
