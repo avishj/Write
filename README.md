@@ -1,13 +1,13 @@
-# Count
+# Write
 
 A precision instrument for measuring your text.
 
-[![CI](https://github.com/avishj/Count/actions/workflows/ci.yml/badge.svg)](https://github.com/avishj/Count/actions/workflows/ci.yml)
+[![CI](https://github.com/avishj/Write/actions/workflows/ci.yml/badge.svg)](https://github.com/avishj/Write/actions/workflows/ci.yml)
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
 ## About
 
-Count is a text counting and visualization tool that provides real-time analysis of characters, words, sentences, and paragraphs. Features include multiple tabs, local history persistence, version history, diff visualization for character/word limits, dark/light theme, and sharing via compressed URL parameters.
+Write is a text counting and visualization tool that provides real-time analysis of characters, words, sentences, and paragraphs. Features include multiple tabs, local history persistence, version history, diff visualization for character/word limits, dark/light theme, and sharing via compressed URL parameters.
 
 ## Tech Stack
 
@@ -37,9 +37,9 @@ bun run preview
 
 ```bash
 bun run test:unit        # Vitest unit tests
-bun run test:smoke       # Playwright smoke tests
+bun run test:browser     # Playwright browser tests
 bun run coverage         # Unit tests with V8 coverage
-bun run lint             # ESLint + Stylelint + markdownlint
+bun run lint             # ESLint
 bun run check            # TypeScript typecheck
 ```
 
