@@ -11,7 +11,7 @@
 
 ## Overview
 
-Count is a precision text counting and visualization tool built as an Astro static site with a React client-only island.
+Write is a precision text counting and visualization tool built as an Astro static site with a React client-only island.
 
 ## Core Stack
 
