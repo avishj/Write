@@ -8,5 +8,5 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  site: "https://count.avishj.dev",
+  site: "https://write.avishj.dev",
 });
