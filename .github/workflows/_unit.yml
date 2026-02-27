@@ -16,10 +16,7 @@ jobs:
       - name: Setup JS environment
         uses: ./.github/actions/setup-js
 
-      - name: Unit tests
-        run: bun run test:unit
-
-      - name: Coverage
+      - name: Unit tests + coverage
         run: bun run coverage
 
       - name: Upload coverage
