@@ -1,11 +1,12 @@
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   resolve: {
     alias: {
-      "@lib": new URL("./src/lib", import.meta.url).pathname,
-      "@app": new URL("./src/app", import.meta.url).pathname,
-      "@tests": new URL("./tests", import.meta.url).pathname,
+      "@lib": fileURLToPath(new URL("./src/lib", import.meta.url)),
+      "@app": fileURLToPath(new URL("./src/app", import.meta.url)),
+      "@tests": fileURLToPath(new URL("./tests", import.meta.url)),
     },
   },
   test: {
