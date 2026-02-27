@@ -1,0 +1,27 @@
+name: Unit Tests
+
+on:
+  workflow_call:
+
+jobs:
+  unit:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup JS environment
+        uses: ./.github/actions/setup-js
+
+      - name: Unit tests + coverage
+        run: bun run coverage
+
+      - name: Upload coverage
+        if: always()
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
+        with:
+          files: ./coverage/coverage-final.json
+          fail_ci_if_error: false

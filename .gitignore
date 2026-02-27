@@ -1,0 +1,41 @@
+# dependencies
+node_modules
+
+# astro
+.astro/
+dist/
+
+# output
+*.tgz
+
+# code coverage
+coverage/
+*.lcov
+
+# playwright
+test-results/
+playwright-report/
+blob-report/
+
+# logs
+logs/
+*.log
+
+# dotenv
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# caches
+.eslintcache
+.cache
+*.tsbuildinfo
+
+# IDEs
+.idea
+.vscode
+
+# OS
+.DS_Store
