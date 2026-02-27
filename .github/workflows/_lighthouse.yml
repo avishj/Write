@@ -7,7 +7,7 @@ on:
         description: URL to audit
         type: string
         required: false
-        default: https://count.avishj.dev
+        default: https://write.avishj.dev
       local-server:
         description: Start local test server before auditing
         type: boolean
