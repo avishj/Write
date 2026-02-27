@@ -1,11 +1,11 @@
-name: Unit & Integration Tests
+name: Unit Tests
 
 on:
   workflow_call:
 
 jobs:
-  unit-integration:
-    name: Unit & Integration Tests
+  unit:
+    name: Unit Tests
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -18,9 +18,6 @@ jobs:
 
       - name: Unit tests
         run: bun run test:unit
-
-      - name: Integration tests
-        run: bun run test:integration
 
       - name: Coverage
         run: bun run coverage

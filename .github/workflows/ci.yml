@@ -46,17 +46,12 @@ jobs:
     if: needs.changes.outputs.code == 'true'
     uses: ./.github/workflows/_lint-typecheck.yml
 
-  unit-integration:
+  unit:
     needs: changes
     if: needs.changes.outputs.code == 'true'
-    uses: ./.github/workflows/_unit-integration.yml
+    uses: ./.github/workflows/_unit.yml
 
-  smoke:
+  browser-tests:
     needs: changes
     if: needs.changes.outputs.code == 'true'
-    uses: ./.github/workflows/_smoke.yml
-
-  e2e:
-    needs: changes
-    if: needs.changes.outputs.code == 'true'
-    uses: ./.github/workflows/_e2e.yml
+    uses: ./.github/workflows/_browser-tests.yml
