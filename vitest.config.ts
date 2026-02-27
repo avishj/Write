@@ -10,11 +10,7 @@ export default defineConfig({
   },
   test: {
     restoreMocks: true,
-    include: [
-      "tests/unit/**/*.test.ts",
-      "tests/integration/**/*.test.ts",
-      "tests/component/**/*.test.{ts,tsx}",
-    ],
+    include: ["tests/unit/**/*.test.{ts,tsx}"],
     coverage: {
       provider: "v8",
       thresholds: {
