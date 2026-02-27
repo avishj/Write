@@ -10,6 +10,7 @@ export default defineConfig({
     },
   },
   test: {
+    environment: "jsdom",
     restoreMocks: true,
     include: ["tests/unit/**/*.test.{ts,tsx}"],
     coverage: {
