@@ -11,17 +11,14 @@
 
 ## Overview
 
-Count is a precision text counting and visualization tool. Astro static site with a React SPA island, Tailwind CSS v4, deployed to GitHub Pages. Supports multiple tabs, local history persistence, version history, diff visualization, dark/light theme, and sharing via compressed URL params.
+Count is a precision text counting and visualization tool built as an Astro static site with a React client-only island.
 
-## Tech Stack
+## Core Stack
 
-- **Runtime**: Bun
-- **Framework**: Astro (static output) + React (client island)
-- **Styling**: Tailwind CSS v4 (`@tailwindcss/vite`)
-- **Language**: TypeScript (strict)
-- **Testing**: Vitest (unit/integration/component) + Playwright (smoke/e2e)
-- **CI**: GitHub Actions with reusable workflows + AutoLighthouse
-- **Deploy**: GitHub Pages
+- Bun
+- Astro + React (`client:only="react"`)
+- Tailwind CSS v4 (`@tailwindcss/vite`)
+- TypeScript (strict)
 
 ## Commands
 
@@ -30,29 +27,14 @@ Count is a precision text counting and visualization tool. Astro static site wit
 | `bun run dev` | Start dev server |
 | `bun run build` | Production build |
 | `bun run preview` | Preview production build |
-| `bun run check` | TypeScript typecheck |
-| `bun run lint` | ESLint + Stylelint + markdownlint |
-| `bun run lint:fix` | Auto-fix lint issues |
 | `bun run test:unit` | Unit tests |
-| `bun run test:integration` | Integration tests |
-| `bun run test:component` | Component tests |
 | `bun run test:smoke` | Playwright smoke tests |
 | `bun run test:e2e` | Playwright E2E tests |
-| `bun run coverage` | Unit tests with V8 coverage |
-
-## Project Structure
-
-- `src/app/` — React application (stores, components, hooks)
-- `src/lib/` — Pure library code (analysis engine, persistence, sharing)
-- `src/pages/` — Astro pages (single index.astro)
-- `src/components/` — Astro layout components
-- `src/styles/` — Global CSS and design tokens
-- `tests/` — All test files (unit, integration, component, smoke, e2e)
-- `.github/` — CI/CD workflows and composite actions
+| `bun run check` | TypeScript typecheck |
+| `bun run lint` | ESLint + Stylelint + markdownlint |
 
 ## Gotchas
 
 - **Tailwind v4**: Uses `@tailwindcss/vite` plugin directly, NOT `@astrojs/tailwind` (which only supports v3).
 - **React island**: App mounts via `client:only="react"` — no SSR for the React tree.
-- **CI skips tests** for non-code changes (docs, markdown, config files).
-- **Coverage thresholds**: 90/90/90/80 per-file (statements/branches/functions/lines).
+- **Deploy workflow**: `deploy.yml` must only deploy; test jobs belong in CI workflows.
