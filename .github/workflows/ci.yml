@@ -55,3 +55,15 @@ jobs:
     needs: changes
     if: needs.changes.outputs.code == 'true'
     uses: ./.github/workflows/_browser-tests.yml
+
+  lighthouse:
+    needs: changes
+    if: needs.changes.outputs.frontend == 'true'
+    uses: ./.github/workflows/_lighthouse.yml
+    permissions:
+      contents: write
+      issues: write
+    with:
+      url: http://localhost:4321
+      local-server: true
+      save-history: false
