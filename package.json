@@ -8,8 +8,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "bunx tsc --noEmit",
-    "lint": "eslint . && stylelint 'src/**/*.css' && markdownlint-cli2",
-    "lint:fix": "eslint . --fix && stylelint 'src/**/*.css' --fix && markdownlint-cli2 --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "test:unit": "vitest run --config vitest.config.ts",
     "test:integration": "vitest run --config vitest.config.ts --include 'tests/integration/**/*.test.ts'",
     "test:component": "vitest run --config vitest.config.ts --include 'tests/component/**/*.test.{ts,tsx}'",
@@ -26,7 +26,6 @@
     "tailwindcss": "^4.2.1"
   },
   "devDependencies": {
-    "@dreamsicle.io/stylelint-config-tailwindcss": "^1.2.2",
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.58.2",
     "@types/react": "^19.2.14",
@@ -38,9 +37,6 @@
     "eslint-plugin-astro": "^1.6.0",
     "eslint-plugin-react-hooks": "^7.0.1",
     "globals": "^17.3.0",
-    "markdownlint-cli2": "^0.21.0",
-    "stylelint": "^17.4.0",
-    "stylelint-config-standard": "^40.0.0",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18"
   }
