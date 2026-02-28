@@ -4,7 +4,6 @@ import {
   useCallback,
   useId,
   type ReactNode,
-  type KeyboardEvent,
 } from "react";
 
 interface ModalProps {
@@ -50,36 +49,25 @@ export function Modal({ open, onClose, title, children }: ModalProps) {
     [onClose],
   );
 
-  // Close on Escape (native dialog handles this, but we need to sync state)
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent<HTMLDialogElement>) => {
-      if (e.key === "Escape") {
-        e.preventDefault();
-        onClose();
-      }
-    },
-    [onClose],
-  );
-
-  // Handle native close event (e.g. from Escape key when we don't prevent)
+  // Handle native cancel event (fired when user presses Escape on <dialog>)
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
 
-    const handleClose = () => {
-      if (open) onClose();
+    const handleCancel = (e: Event) => {
+      e.preventDefault();
+      onClose();
     };
 
-    dialog.addEventListener("close", handleClose);
-    return () => dialog.removeEventListener("close", handleClose);
-  }, [open, onClose]);
+    dialog.addEventListener("cancel", handleCancel);
+    return () => dialog.removeEventListener("cancel", handleCancel);
+  }, [onClose]);
 
   if (!open) return null;
 
   return (
     <dialog
       ref={dialogRef}
-      onKeyDown={handleKeyDown}
       onClick={handleBackdropClick}
       aria-labelledby={titleId}
       className="m-auto max-h-[85vh] w-full max-w-lg rounded-lg border p-0 backdrop:bg-transparent"

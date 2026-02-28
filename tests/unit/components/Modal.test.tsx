@@ -80,7 +80,7 @@ describe("Modal", () => {
       </Modal>,
     );
     const dialog = screen.getByRole("dialog");
-    fireEvent.keyDown(dialog, { key: "Escape" });
+    dialog.dispatchEvent(new Event("cancel", { bubbles: true }));
     expect(onClose).toHaveBeenCalled();
   });
 
