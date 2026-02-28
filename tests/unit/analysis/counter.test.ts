@@ -201,4 +201,14 @@ describe("counter", () => {
       expect(countSentences("Hello world.")).toBe(1);
     });
   });
+
+  describe("countParagraphs() — line endings", () => {
+    it("handles Windows-style \\r\\n line endings", () => {
+      expect(countParagraphs("First.\r\n\r\nSecond.")).toBe(2);
+    });
+
+    it("handles mixed line endings", () => {
+      expect(countParagraphs("First.\n\nSecond.\r\n\r\nThird.")).toBe(3);
+    });
+  });
 });

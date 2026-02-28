@@ -60,7 +60,7 @@ export function countCharacters(text: string, includeSpaces = true): number {
  * Count paragraphs in text.
  *
  * Rules:
- * - Split on two or more newlines (`\n\n+`)
+ * - Split on two or more newlines (handles both \n and \r\n)
  * - Filter out empty/whitespace-only blocks
  * - Empty/whitespace-only text → 0
  */
@@ -68,7 +68,7 @@ export function countParagraphs(text: string): number {
   const trimmed = text.trim();
   if (!trimmed) return 0;
   return trimmed
-    .split(/\n{2,}/)
+    .split(/(?:\r?\n){2,}/)
     .filter((block) => block.trim().length > 0).length;
 }
 
