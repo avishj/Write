@@ -34,8 +34,6 @@ export function Modal({ open, onClose, title, children }: ModalProps) {
 
     if (open && !dialog.open) {
       dialog.showModal();
-    } else if (!open && dialog.open) {
-      dialog.close();
     }
   }, [open]);
 
