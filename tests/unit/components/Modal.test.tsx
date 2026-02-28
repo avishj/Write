@@ -93,7 +93,7 @@ describe("Modal", () => {
     const dialog = screen.getByRole("dialog");
     const titleEl = screen.getByText("Accessible Title");
     const labelledBy = dialog.getAttribute("aria-labelledby");
-    expect(labelledBy).toBeDefined();
+    expect(labelledBy).not.toBeNull();
     expect(titleEl.id).toBe(labelledBy);
   });
 });
