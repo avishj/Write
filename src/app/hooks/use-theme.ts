@@ -68,6 +68,7 @@ export function initTheme(storage?: StorageBackend): void {
   currentStorage = storage;
   currentTheme = resolveInitialTheme(storage);
   applyTheme(currentTheme);
+  emitChange();
 }
 
 /**
