@@ -2,6 +2,7 @@ import {
   useEffect,
   useRef,
   useCallback,
+  useId,
   type ReactNode,
   type KeyboardEvent,
 } from "react";
@@ -25,6 +26,7 @@ interface ModalProps {
  */
 export function Modal({ open, onClose, title, children }: ModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const titleId = useId();
 
   // Sync open state with the <dialog> element
   useEffect(() => {
@@ -79,7 +81,7 @@ export function Modal({ open, onClose, title, children }: ModalProps) {
       ref={dialogRef}
       onKeyDown={handleKeyDown}
       onClick={handleBackdropClick}
-      aria-labelledby="modal-title"
+      aria-labelledby={titleId}
       className="m-auto max-h-[85vh] w-full max-w-lg rounded-lg border p-0 backdrop:bg-transparent"
       style={{
         backgroundColor: "var(--bg-surface)",
@@ -101,7 +103,7 @@ export function Modal({ open, onClose, title, children }: ModalProps) {
           style={{ borderColor: "var(--border-subtle)" }}
         >
           <h2
-            id="modal-title"
+            id={titleId}
             className="text-base font-semibold font-ui"
           >
             {title}

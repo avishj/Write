@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { Modal } from "@app/components/common/Modal";
 
 afterEach(cleanup);
@@ -22,8 +22,6 @@ beforeAll(() => {
     };
   }
 });
-
-import { beforeAll } from "vitest";
 
 describe("Modal", () => {
   it("renders nothing when closed", () => {
@@ -93,7 +91,9 @@ describe("Modal", () => {
       </Modal>,
     );
     const dialog = screen.getByRole("dialog");
-    expect(dialog.getAttribute("aria-labelledby")).toBe("modal-title");
-    expect(screen.getByText("Accessible Title").id).toBe("modal-title");
+    const titleEl = screen.getByText("Accessible Title");
+    const labelledBy = dialog.getAttribute("aria-labelledby");
+    expect(labelledBy).toBeDefined();
+    expect(titleEl.id).toBe(labelledBy);
   });
 });
