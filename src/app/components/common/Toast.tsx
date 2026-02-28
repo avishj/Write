@@ -107,7 +107,15 @@ function ToastItem({
   return (
     <div
       role="status"
+      tabIndex={0}
       onClick={onDismiss}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onDismiss();
+        }
+      }}
+      aria-label={`${entry.message} — press Enter to dismiss`}
       className="pointer-events-auto cursor-pointer rounded-lg border px-4 py-3 text-sm font-ui shadow-lg"
       style={{
         backgroundColor: "var(--bg-surface)",
