@@ -29,6 +29,8 @@ export default defineConfig({
         "**/*.d.ts",
         "src/env.d.ts",
         "src/pages/**",
+        "src/app/providers/**",
+        "src/components/**",
       ],
     },
   },
