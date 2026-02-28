@@ -42,6 +42,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
       <Tooltip content={label} side={tooltipSide}>
         <button
           ref={ref}
+          {...props}
           type="button"
           aria-label={label}
           className={[
@@ -53,7 +54,6 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
           ]
             .filter(Boolean)
             .join(" ")}
-          {...props}
         >
           {children}
         </button>
