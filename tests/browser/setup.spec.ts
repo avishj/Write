@@ -10,10 +10,8 @@ test.describe("page load", () => {
     const context = await browser.newContext({ colorScheme: "dark" });
     const page = await context.newPage();
     await page.goto("/");
-    // Wait for React to hydrate and apply theme
-    await page.waitForFunction(
-      () => document.querySelector("astro-island")?.hasAttribute("ssr") === false,
-    );
+    // Wait for React to mount (renders an h1 inside main)
+    await page.locator("main h1").waitFor({ state: "visible" });
     const theme = await page.locator("html").getAttribute("data-theme");
     expect(theme).toBe("dark");
     await context.close();
