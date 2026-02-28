@@ -1,4 +1,4 @@
-import { useSyncExternalStore, useCallback, type ReactNode } from "react";
+import { useSyncExternalStore } from "react";
 
 /** Toast configuration options */
 interface ToastOptions {
