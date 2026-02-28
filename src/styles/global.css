@@ -31,6 +31,7 @@
   --accent: #c4956a;
   --accent-hover: #d4a87e;
   --accent-muted: #c4956a20;
+  --selection: #c4956a40;
 
   /* Semantic */
   --success: #6a9e7e;
@@ -68,6 +69,7 @@
   --accent: #8b5e3c;
   --accent-hover: #a06e4a;
   --accent-muted: #8b5e3c12;
+  --selection: #8b5e3c30;
 
   /* Semantic */
   --success: #3d7a56;
@@ -137,6 +139,6 @@ body {
  * Selection — themed text selection
  */
 ::selection {
-  background-color: var(--accent-muted);
+  background-color: var(--selection);
   color: var(--text-primary);
 }
