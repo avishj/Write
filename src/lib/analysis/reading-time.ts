@@ -20,12 +20,12 @@ export function estimateReadingTime(
   wordCount: number,
   wpm = 250,
 ): ReadingTimeResult {
-  if (wordCount <= 0) {
-    return { minutes: 0, label: "< 1 min read" };
-  }
-
   if (wpm <= 0) {
     throw new RangeError("wpm must be greater than 0");
+  }
+
+  if (wordCount <= 0) {
+    return { minutes: 0, label: "< 1 min read" };
   }
 
   const raw = wordCount / wpm;

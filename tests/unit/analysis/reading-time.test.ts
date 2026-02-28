@@ -58,5 +58,9 @@ describe("reading-time", () => {
     it("throws RangeError when wpm is negative", () => {
       expect(() => estimateReadingTime(100, -1)).toThrow(RangeError);
     });
+
+    it("throws RangeError when wpm is 0 even with 0 words", () => {
+      expect(() => estimateReadingTime(0, 0)).toThrow(RangeError);
+    });
   });
 });
