@@ -133,6 +133,8 @@ export function countSentences(text: string): number {
 
   let sentenceCount = 0;
   let i = 0;
+  /** Index of the last character consumed by a sentence boundary */
+  let lastBoundaryEnd = 0;
 
   while (i < trimmed.length) {
     const ch = trimmed[i];
@@ -147,6 +149,7 @@ export function countSentences(text: string): number {
         while (i < trimmed.length && /\s/.test(trimmed[i])) i++;
         if (i < trimmed.length) {
           sentenceCount++;
+          lastBoundaryEnd = i;
         }
         continue;
       }
@@ -176,6 +179,7 @@ export function countSentences(text: string): number {
       i++;
       // Skip any additional punctuation/whitespace after
       while (i < trimmed.length && /[\s.!?]/.test(trimmed[i])) i++;
+      lastBoundaryEnd = i;
       continue;
     }
 
@@ -186,6 +190,7 @@ export function countSentences(text: string): number {
       while (i < trimmed.length && /[!?]/.test(trimmed[i])) i++;
       // Skip whitespace
       while (i < trimmed.length && /\s/.test(trimmed[i])) i++;
+      lastBoundaryEnd = i;
       continue;
     }
 
@@ -194,7 +199,18 @@ export function countSentences(text: string): number {
 
   // If no sentence boundaries were found but text has words,
   // count as 1 sentence (e.g., "Hello" with no period)
-  return sentenceCount === 0 ? 1 : sentenceCount;
+  if (sentenceCount === 0) return 1;
+
+  // If there's trailing text after the last boundary, count it as
+  // an additional sentence (e.g., "Hello world. Goodbye world")
+  if (lastBoundaryEnd < trimmed.length) {
+    const trailing = trimmed.slice(lastBoundaryEnd);
+    if (/\S/.test(trailing)) {
+      sentenceCount++;
+    }
+  }
+
+  return sentenceCount;
 }
 
 /**

@@ -200,6 +200,10 @@ describe("counter", () => {
     it("trailing period counts as sentence end", () => {
       expect(countSentences("Hello world.")).toBe(1);
     });
+
+    it("counts trailing fragment after punctuation as sentence", () => {
+      expect(countSentences("Hello world. Goodbye world")).toBe(2);
+    });
   });
 
   describe("countParagraphs() — line endings", () => {
