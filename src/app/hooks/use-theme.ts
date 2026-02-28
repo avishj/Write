@@ -6,7 +6,7 @@ import {
   saveSetting,
 } from "@lib/persistence/settings";
 
-type Theme = "dark" | "light";
+export type Theme = "dark" | "light";
 
 /** Detect system preference via matchMedia */
 function getSystemTheme(): Theme {
