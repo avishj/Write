@@ -16,6 +16,31 @@ const ogImage = new URL("/og-image.png", canonicalUrl).href;
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Blocking script: apply data-theme before first paint to prevent flash -->
+  <script is:inline>
+    (function () {
+      try {
+        var stored = localStorage.getItem("count-theme");
+        if (stored) {
+          var theme = JSON.parse(stored);
+          if (theme === "dark" || theme === "light") {
+            document.documentElement.setAttribute("data-theme", theme);
+            return;
+          }
+        }
+      } catch (e) {}
+      // Fall back to system preference
+      var prefersDark =
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.setAttribute(
+        "data-theme",
+        prefersDark ? "dark" : "light",
+      );
+    })();
+  </script>
+
   <meta name="description" content={description} />
   <link rel="canonical" href={canonicalUrl.href} />
 
