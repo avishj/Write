@@ -51,6 +51,9 @@ export async function deleteVersion(id: string): Promise<void> {
  * Only auto-save versions (type === "auto") are considered for pruning.
  * Manual (named) versions are always preserved.
  * The oldest auto-save versions are removed first.
+ *
+ * Read + delete happen in a single readwrite transaction to avoid
+ * TOCTOU races with concurrent saveVersion calls.
  */
 export async function pruneAutoVersions(
   documentId: string,
@@ -58,20 +61,20 @@ export async function pruneAutoVersions(
 ): Promise<void> {
   const db = await openDB();
   try {
-    const all = await db.getAllFromIndex(
-      "versions",
-      "by-document",
-      documentId,
-    );
+    const tx = db.transaction("versions", "readwrite");
+    const index = tx.objectStore("versions").index("by-document");
+    const all = await index.getAll(documentId);
 
     const autoVersions = all
       .filter((v) => v.type === "auto")
       .sort((a, b) => a.createdAt - b.createdAt); // oldest first
 
     const toDelete = autoVersions.length - maxCount;
-    if (toDelete <= 0) return;
+    if (toDelete <= 0) {
+      await tx.done;
+      return;
+    }
 
-    const tx = db.transaction("versions", "readwrite");
     const store = tx.objectStore("versions");
     for (let i = 0; i < toDelete; i++) {
       await store.delete(autoVersions[i].id);

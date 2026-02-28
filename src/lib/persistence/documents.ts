@@ -1,8 +1,7 @@
 /**
  * Document CRUD operations backed by IndexedDB.
  *
- * All functions open a fresh DB connection per call.
- * The `idb` library handles connection pooling internally.
+ * Each function opens and closes its own DB connection.
  */
 
 import { openDB, type StoredDocument } from "@lib/persistence/db";

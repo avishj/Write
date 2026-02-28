@@ -138,8 +138,13 @@ describe("document persistence", () => {
 
       const retrieved = await getDocument(doc.id);
       expect(retrieved).toBeDefined();
-      // The last write should win — content should be one of the updates
-      expect(["Update 1", "Update 2"]).toContain(retrieved!.content);
+      // Last-write-wins: content and updatedAt must be consistent
+      if (retrieved!.content === "Update 1") {
+        expect(retrieved!.updatedAt).toBe(doc.updatedAt + 100);
+      } else {
+        expect(retrieved!.content).toBe("Update 2");
+        expect(retrieved!.updatedAt).toBe(doc.updatedAt + 200);
+      }
     });
   });
 });
