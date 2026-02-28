@@ -2,6 +2,7 @@ import {
   useState,
   useRef,
   useEffect,
+  useId,
   type ReactNode,
   type CSSProperties,
 } from "react";
@@ -29,6 +30,7 @@ export function Tooltip({
 }: TooltipProps) {
   const [visible, setVisible] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
+  const tooltipId = useId();
 
   const show = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -60,10 +62,12 @@ export function Tooltip({
       onMouseLeave={hide}
       onFocus={show}
       onBlur={hide}
+      aria-describedby={visible ? tooltipId : undefined}
     >
       {children}
       {visible && (
         <span
+          id={tooltipId}
           role="tooltip"
           className="pointer-events-none absolute z-50 whitespace-nowrap rounded px-2 py-1 text-[11px] font-medium"
           style={{
