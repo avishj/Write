@@ -81,7 +81,7 @@ describe("Modal", () => {
     );
     const dialog = screen.getByRole("dialog");
     dialog.dispatchEvent(new Event("cancel", { bubbles: true }));
-    expect(onClose).toHaveBeenCalled();
+    expect(onClose).toHaveBeenCalledOnce();
   });
 
   it("has aria-labelledby pointing to title", () => {
