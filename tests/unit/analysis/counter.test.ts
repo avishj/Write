@@ -124,6 +124,14 @@ describe("counter", () => {
     it("counts Unicode characters correctly", () => {
       expect(countCharacters(UNICODE_TEXT)).toBe(17);
     });
+
+    it("includes leading and trailing spaces in count", () => {
+      expect(countCharacters("  hello  ")).toBe(9);
+    });
+
+    it("excludes all whitespace when includeSpaces is false", () => {
+      expect(countCharacters("  hello  ", false)).toBe(5);
+    });
   });
 
   describe("countParagraphs()", () => {
@@ -183,6 +191,14 @@ describe("counter", () => {
 
     it("handles mixed punctuation", () => {
       expect(countSentences(MIXED_PUNCTUATION)).toBe(2);
+    });
+
+    it("trailing ellipsis does not add phantom sentence", () => {
+      expect(countSentences("Hmm...")).toBe(1);
+    });
+
+    it("trailing period counts as sentence end", () => {
+      expect(countSentences("Hello world.")).toBe(1);
     });
   });
 });

@@ -14,7 +14,7 @@ export interface CountResult {
 }
 
 /**
- * Count all text metrics in a single pass where possible.
+ * Count all text metrics.
  */
 export function count(text: string): CountResult {
   return {
@@ -51,10 +51,9 @@ export function countWords(text: string): number {
  * Whitespace-only input returns 0 regardless of includeSpaces.
  */
 export function countCharacters(text: string, includeSpaces = true): number {
-  const trimmed = text.trim();
-  if (!trimmed) return 0;
-  if (includeSpaces) return trimmed.length;
-  return trimmed.replace(/\s/g, "").length;
+  if (!text || !text.trim()) return 0;
+  if (includeSpaces) return text.length;
+  return text.replace(/\s/g, "").length;
 }
 
 /**
@@ -95,7 +94,6 @@ const ABBREVIATIONS = new Set([
   "etc",
   "approx",
   "appt",
-  "dept",
   "depts",
   "gen",
   "hon",
@@ -141,11 +139,15 @@ export function countSentences(text: string): number {
 
     if (ch === ".") {
       // Check for ellipsis: consume all dots
-      if (trimmed[i + 1] === "." || trimmed[i + 1] === ".") {
+      if (trimmed[i + 1] === ".") {
         while (i < trimmed.length && trimmed[i] === ".") i++;
         // Ellipsis counts as a sentence boundary only if followed by
-        // whitespace + a new word (or end of string after consuming more text)
-        sentenceCount++;
+        // whitespace + a new word (i.e., there is text after the ellipsis)
+        // Skip whitespace after ellipsis
+        while (i < trimmed.length && /\s/.test(trimmed[i])) i++;
+        if (i < trimmed.length) {
+          sentenceCount++;
+        }
         continue;
       }
 
