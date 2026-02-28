@@ -10,6 +10,7 @@ const {
 } = Astro.props;
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? "https://write.avish.dev");
+const ogImage = new URL("/og-image.png", canonicalUrl).href;
 ---
 
 <head>
@@ -49,13 +50,13 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? "https://write.av
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:url" content={canonicalUrl.href} />
-  <meta property="og:image" content="/og-image.png" />
+  <meta property="og:image" content={ogImage} />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description} />
-  <meta name="twitter:image" content="/og-image.png" />
+  <meta name="twitter:image" content={ogImage} />
 
   <!-- Theme color (dark default) -->
   <meta name="theme-color" content="#0e0e13" />
