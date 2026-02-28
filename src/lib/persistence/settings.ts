@@ -35,7 +35,7 @@ export interface StorageBackend {
 }
 
 /** localStorage key prefix */
-const PREFIX = "count";
+const PREFIX = "write";
 
 /** Exported theme storage key (for direct lookups in use-theme) */
 export const THEME_STORAGE_KEY = `${PREFIX}-theme`;

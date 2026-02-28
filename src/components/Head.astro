@@ -21,7 +21,7 @@ const ogImage = new URL("/og-image.png", canonicalUrl).href;
   <script is:inline>
     (function () {
       try {
-        var stored = localStorage.getItem("count-theme");
+        var stored = localStorage.getItem("write-theme");
         if (stored) {
           var theme = JSON.parse(stored);
           if (theme === "dark" || theme === "light") {

@@ -33,7 +33,7 @@ describe("useTheme", () => {
   });
 
   it("loads persisted theme from storage", () => {
-    storage.setItem("count-theme", JSON.stringify("light"));
+    storage.setItem("write-theme", JSON.stringify("light"));
     initTheme(storage);
     const { result } = renderHook(() => useTheme());
     expect(result.current.theme).toBe("light");
@@ -57,7 +57,7 @@ describe("useTheme", () => {
   });
 
   it("toggles theme from light to dark", () => {
-    storage.setItem("count-theme", JSON.stringify("light"));
+    storage.setItem("write-theme", JSON.stringify("light"));
     initTheme(storage);
     const { result } = renderHook(() => useTheme());
 
@@ -77,6 +77,6 @@ describe("useTheme", () => {
       result.current.toggleTheme();
     });
 
-    expect(storage.data.get("count-theme")).toBe(JSON.stringify("light"));
+    expect(storage.data.get("write-theme")).toBe(JSON.stringify("light"));
   });
 });

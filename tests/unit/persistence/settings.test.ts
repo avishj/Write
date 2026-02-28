@@ -35,14 +35,14 @@ describe("settings persistence", () => {
     });
 
     it("loads a saved theme", () => {
-      storage.setItem("count-theme", JSON.stringify("light"));
+      storage.setItem("write-theme", JSON.stringify("light"));
       const settings = loadSettings(storage);
       expect(settings.theme).toBe("light");
     });
 
     it("loads saved sidebar state", () => {
       storage.setItem(
-        "count-sidebar",
+        "write-sidebar",
         JSON.stringify({ collapsed: true, width: 200 }),
       );
       const settings = loadSettings(storage);
@@ -51,13 +51,13 @@ describe("settings persistence", () => {
     });
 
     it("falls back to defaults for corrupt data", () => {
-      storage.setItem("count-theme", "not-valid-json{{{");
+      storage.setItem("write-theme", "not-valid-json{{{");
       const settings = loadSettings(storage);
       expect(settings.theme).toBe(defaultSettings.theme);
     });
 
     it("falls back to defaults for invalid values", () => {
-      storage.setItem("count-theme", JSON.stringify("blue"));
+      storage.setItem("write-theme", JSON.stringify("blue"));
       const settings = loadSettings(storage);
       expect(settings.theme).toBe(defaultSettings.theme);
     });
