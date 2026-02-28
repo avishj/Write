@@ -18,8 +18,12 @@
     "@astrojs/react": "^4.4.2",
     "@tailwindcss/vite": "^4.2.1",
     "astro": "^5.18.0",
+    "coleman-liau": "^2.0.1",
+    "flesch": "^2.0.1",
+    "flesch-kincaid": "^2.0.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "syllable": "^5.0.1",
     "tailwindcss": "^4.2.1"
   },
   "devDependencies": {
