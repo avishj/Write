@@ -110,9 +110,9 @@ function detectCharacterOverflow(text: string, limit: number): OverflowResult {
 }
 
 /**
- * For paragraph limits: count paragraph boundaries until limitValue
- * paragraphs have been counted. Returns the character index at the
- * start of the next paragraph.
+ * For paragraph limits: find the character index where the (limit+1)th
+ * paragraph begins. Uses the same splitting logic as countParagraphs
+ * (double newlines, possibly \r\n) to stay consistent.
  */
 function detectParagraphOverflow(text: string, limit: number): OverflowResult {
   const totalParagraphs = countParagraphs(text);
@@ -129,50 +129,61 @@ function detectParagraphOverflow(text: string, limit: number): OverflowResult {
     };
   }
 
-  // Walk through the text, counting paragraph boundaries (double newlines)
-  let paraCount = 1; // First paragraph starts at the beginning
+  // Single pass: find paragraph boundaries (2+ consecutive newlines)
+  // counting non-empty paragraphs until we've passed `limit` of them.
+  let paraCount = 0;
   let i = 0;
+  const len = text.length;
 
-  while (i < text.length && paraCount < limit) {
-    if (text[i] === "\n") {
-      // Check for paragraph break (two or more newlines)
-      const start = i;
-      while (i < text.length && text[i] === "\n") i++;
-      if (i - start >= 2) {
-        // Skip any leading whitespace in the next paragraph
-        while (i < text.length && text[i] !== "\n" && /\s/.test(text[i])) i++;
-        if (i < text.length) {
-          paraCount++;
-        }
-      }
-    } else {
+  while (i < len) {
+    // Skip paragraph-break whitespace (newlines between paragraphs)
+    if (text[i] === "\n" || text[i] === "\r") {
       i++;
+      continue;
     }
-  }
 
-  // Now find the next paragraph break after the limit
-  if (paraCount >= limit) {
-    // Continue scanning until we find the next paragraph boundary
-    while (i < text.length) {
-      if (text[i] === "\n") {
-        const start = i;
-        while (i < text.length && text[i] === "\n") i++;
-        if (i - start >= 2) {
-          // Skip leading whitespace
-          while (i < text.length && text[i] !== "\n" && /\s/.test(text[i]))
+    // We're at the start of a non-empty paragraph
+    paraCount++;
+
+    if (paraCount > limit) {
+      // This is the first char of the overflow paragraph
+      return {
+        isOver: true,
+        overflowAmount: totalParagraphs - limit,
+        boundaryCharIndex: i,
+      };
+    }
+
+    // Consume the rest of this paragraph (until a double-newline break)
+    while (i < len) {
+      if (text[i] === "\n" || text[i] === "\r") {
+        // Check if this is a paragraph break (2+ line endings)
+        const breakStart = i;
+        let lineEndCount = 0;
+        while (i < len && (text[i] === "\n" || text[i] === "\r")) {
+          // Count \r\n as one line ending, \n as one
+          if (text[i] === "\r" && i + 1 < len && text[i + 1] === "\n") {
+            i += 2;
+          } else {
             i++;
-          // This is the start of the overflow paragraph
-          return {
-            isOver: true,
-            overflowAmount: totalParagraphs - limit,
-            boundaryCharIndex: i,
-          };
+          }
+          lineEndCount++;
         }
+        if (lineEndCount >= 2) {
+          // Paragraph break found — outer loop will handle next paragraph
+          break;
+        }
+        // Single newline — still same paragraph, continue consuming
       } else {
         i++;
       }
     }
   }
 
-  return { isOver: false, overflowAmount: 0, boundaryCharIndex: text.length };
+  // Should not reach here given totalParagraphs > limit, but guard anyway
+  return {
+    isOver: true,
+    overflowAmount: totalParagraphs - limit,
+    boundaryCharIndex: text.length,
+  };
 }

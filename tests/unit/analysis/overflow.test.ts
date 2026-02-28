@@ -92,6 +92,21 @@ describe("overflow", () => {
       const overflow = text.slice(result.boundaryCharIndex);
       expect(overflow).toBe("Third para.");
     });
+
+    it("handles leading blank lines", () => {
+      const text = "\n\nFirst para.\n\nSecond para.";
+      const result = detectOverflow(text, "paragraphs", 1);
+      expect(result.isOver).toBe(true);
+      expect(result.overflowAmount).toBe(1);
+      expect(text.slice(result.boundaryCharIndex)).toBe("Second para.");
+    });
+
+    it("handles \\r\\n paragraph boundaries", () => {
+      const text = "First para.\r\n\r\nSecond para.\r\n\r\nThird para.";
+      const result = detectOverflow(text, "paragraphs", 2);
+      expect(result.isOver).toBe(true);
+      expect(text.slice(result.boundaryCharIndex)).toBe("Third para.");
+    });
   });
 
   describe("edge cases", () => {
