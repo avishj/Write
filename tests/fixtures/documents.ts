@@ -2,29 +2,9 @@
  * Factory helpers for creating test documents and versions.
  */
 
-import type { LimitType } from "@lib/analysis/overflow";
+import type { StoredDocument, StoredVersion } from "@lib/persistence/db";
 
-export interface StoredDocument {
-  id: string;
-  title: string;
-  content: string;
-  createdAt: number;
-  updatedAt: number;
-  limit?: {
-    type: LimitType;
-    value: number;
-  };
-}
-
-export interface StoredVersion {
-  id: string;
-  documentId: string;
-  content: string;
-  wordCount: number;
-  createdAt: number;
-  type: "auto" | "manual";
-  name?: string;
-}
+export type { StoredDocument, StoredVersion };
 
 let docCounter = 0;
 let versionCounter = 0;
