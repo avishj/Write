@@ -59,8 +59,19 @@ const validators: Record<keyof UserSettings, (v: unknown) => boolean> = {
   charsIncludeSpaces: (v) => typeof v === "boolean",
 };
 
+/** No-op storage for SSR / environments without localStorage */
+const noopStorage: StorageBackend = {
+  getItem: () => null,
+  setItem: () => {},
+  removeItem: () => {},
+};
+
 function getStorage(storage?: StorageBackend): StorageBackend {
-  return storage ?? window.localStorage;
+  if (storage) return storage;
+  if (typeof window !== "undefined" && window.localStorage) {
+    return window.localStorage;
+  }
+  return noopStorage;
 }
 
 function readKey(store: StorageBackend, key: string): unknown {

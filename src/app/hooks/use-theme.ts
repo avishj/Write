@@ -25,8 +25,9 @@ function resolveInitialTheme(storage?: StorageBackend): Theme {
   // If nothing was persisted, the default from loadSettings is "dark".
   // But we want to respect the system preference as fallback.
   // Check if a theme was explicitly persisted by looking at storage directly.
-  const store = storage ?? window.localStorage;
-  const persisted = store.getItem("count-theme");
+  const store =
+    storage ?? (typeof window !== "undefined" ? window.localStorage : null);
+  const persisted = store?.getItem("count-theme") ?? null;
   if (persisted !== null) {
     return settings.theme;
   }
