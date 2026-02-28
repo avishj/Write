@@ -225,19 +225,17 @@ export function countSentences(text: string): number {
 /**
  * Extract the word immediately before a period at index `dotIndex`.
  * Returns null if there's no word before the dot.
+ *
+ * Scans backward up to 20 characters (enough for any reasonable
+ * abbreviation or initial) to avoid O(N²) on pathological input.
  */
 function getWordBeforePeriod(text: string, dotIndex: number): string | null {
-  let end = dotIndex;
-  // Walk backward past any preceding dots+letters (handles "D.C.")
-  let start = end - 1;
-  while (start >= 0 && /[A-Za-z.]/.test(text[start])) {
+  const minStart = Math.max(0, dotIndex - 20);
+  let start = dotIndex - 1;
+  while (start >= minStart && /[A-Za-z]/.test(text[start])) {
     start--;
   }
   start++;
-  // Extract just the last alphabetical segment before this dot
-  const segment = text.slice(start, end);
-  // Get the last word-like piece (after the last dot if any)
-  const parts = segment.split(".");
-  const lastPart = parts[parts.length - 1];
-  return lastPart && lastPart.length > 0 ? lastPart : null;
+  if (start === dotIndex) return null;
+  return text.slice(start, dotIndex);
 }
