@@ -1,8 +1,8 @@
 /**
  * Settings persistence — localStorage read/write
  *
- * Each setting is stored under its own key to avoid
- * read-modify-write races between tabs/components.
+ * Most settings are stored under their own key. Related settings
+ * (sidebar, bottomPanel) share compound keys with read-modify-write.
  *
  * Storage backend is injectable for testing.
  */
