@@ -101,8 +101,8 @@ describe("Tooltip", () => {
         </Tooltip>,
       );
       await user.hover(screen.getByText("Target"));
-      act(() => {
-        vi.advanceTimersByTime(0);
+      await act(async () => {
+        vi.advanceTimersByTime(10);
       });
       const tooltip = screen.getByRole("tooltip");
       expect(tooltip).toBeInTheDocument();
