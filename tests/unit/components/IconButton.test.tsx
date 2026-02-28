@@ -13,7 +13,7 @@ describe("IconButton", () => {
         <span>icon</span>
       </IconButton>,
     );
-    expect(screen.getByRole("button", { name: "Toggle theme" })).toBeDefined();
+    expect(screen.getByRole("button", { name: "Toggle theme" })).toBeInTheDocument();
   });
 
   it("calls onClick when clicked", async () => {
@@ -53,7 +53,7 @@ describe("IconButton", () => {
 
     // Wait for tooltip delay (400ms default)
     await vi.waitFor(() => {
-      expect(screen.getByRole("tooltip")).toBeDefined();
+      expect(screen.getByRole("tooltip")).toBeInTheDocument();
     });
 
     expect(screen.getByRole("tooltip").textContent).toBe("My tooltip");
