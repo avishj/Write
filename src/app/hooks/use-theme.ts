@@ -1,6 +1,7 @@
 import { useCallback, useSyncExternalStore } from "react";
 import {
   type StorageBackend,
+  THEME_STORAGE_KEY,
   defaultSettings,
   loadSettings,
   saveSetting,
@@ -27,7 +28,7 @@ function resolveInitialTheme(storage?: StorageBackend): Theme {
   // Check if a theme was explicitly persisted by looking at storage directly.
   const store =
     storage ?? (typeof window !== "undefined" ? window.localStorage : null);
-  const persisted = store?.getItem("count-theme") ?? null;
+  const persisted = store?.getItem(THEME_STORAGE_KEY) ?? null;
   if (persisted !== null) {
     return settings.theme;
   }

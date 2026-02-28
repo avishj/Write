@@ -37,9 +37,12 @@ export interface StorageBackend {
 /** localStorage key prefix */
 const PREFIX = "count";
 
+/** Exported theme storage key (for direct lookups in use-theme) */
+export const THEME_STORAGE_KEY = `${PREFIX}-theme`;
+
 /** Map each setting to its localStorage key */
 const keyMap: Record<keyof UserSettings, string> = {
-  theme: `${PREFIX}-theme`,
+  theme: THEME_STORAGE_KEY,
   sidebarCollapsed: `${PREFIX}-sidebar`,
   sidebarWidth: `${PREFIX}-sidebar`,
   bottomPanelOpen: `${PREFIX}-bottom-panel`,
