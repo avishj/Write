@@ -204,6 +204,14 @@ describe("counter", () => {
     it("counts trailing fragment after punctuation as sentence", () => {
       expect(countSentences("Hello world. Goodbye world")).toBe(2);
     });
+
+    it("handles initialism at end of sentence", () => {
+      expect(countSentences("I live in D.C. It is busy.")).toBe(2);
+    });
+
+    it("handles initialism mid-sentence", () => {
+      expect(countSentences("The U.S. is large.")).toBe(1);
+    });
   });
 
   describe("countParagraphs() — line endings", () => {

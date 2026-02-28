@@ -168,9 +168,18 @@ export function countSentences(text: string): number {
         }
 
         // Single uppercase letter (initial like "D." in "D.C.")
+        // Only skip if the next character continues the initialism
+        // (another letter+dot) or continues with lowercase (mid-sentence).
+        // If followed by an uppercase word, it's likely a sentence boundary.
         if (INITIALS_RE.test(beforeDot)) {
-          i++;
-          continue;
+          const rest = trimmed.slice(i + 1);
+          const continuesInitialism = /^\s*[A-Z]\./.test(rest);
+          const continuesLowercase = /^\s*[a-z]/.test(rest);
+          if (continuesInitialism || continuesLowercase) {
+            i++;
+            continue;
+          }
+          // Otherwise fall through — this initial's period ends a sentence
         }
       }
 
