@@ -43,8 +43,15 @@ describe("Toast", () => {
     });
     expect(screen.getByText("Temporary message")).toBeDefined();
 
+    // Still visible just before the 3500ms default
     act(() => {
-      vi.advanceTimersByTime(4000);
+      vi.advanceTimersByTime(3499);
+    });
+    expect(screen.queryByText("Temporary message")).not.toBeNull();
+
+    // Gone at exactly 3500ms
+    act(() => {
+      vi.advanceTimersByTime(1);
     });
     expect(screen.queryByText("Temporary message")).toBeNull();
   });
