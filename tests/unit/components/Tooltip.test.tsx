@@ -85,8 +85,6 @@ describe("Tooltip", () => {
   });
 
   it("supports different sides", async () => {
-    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
-
     const sides = ["top", "left", "right"] as const;
     const expectedStyles: Record<string, string> = {
       top: "bottom",
@@ -96,6 +94,7 @@ describe("Tooltip", () => {
 
     for (const side of sides) {
       cleanup();
+      const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
       render(
         <Tooltip content={`${side} tip`} side={side} delay={0}>
           <button>Target</button>
