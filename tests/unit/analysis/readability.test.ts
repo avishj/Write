@@ -112,5 +112,13 @@ describe("readability", () => {
       expect(typeof result!.fleschReadingEase.label).toBe("string");
       expect(result!.fleschReadingEase.label.length).toBeGreaterThan(0);
     });
+
+    it("grade label matches the rounded grade value", () => {
+      const result = analyzeReadability(KNOWN_GRADE_12);
+      expect(result).not.toBeNull();
+      const grade = result!.fleschKincaid.grade;
+      const rounded = Math.round(grade);
+      expect(result!.fleschKincaid.label).toContain(`Grade ${rounded}`);
+    });
   });
 });

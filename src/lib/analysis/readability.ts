@@ -65,18 +65,22 @@ export function analyzeReadability(text: string): ReadabilityResult | null {
   // Flesch Reading Ease
   const freScore = flesch(counts);
 
+  const fkRounded = round(fkGrade, 1);
+  const clRounded = round(clGrade, 1);
+  const freRounded = round(freScore, 1);
+
   return {
     fleschKincaid: {
-      grade: round(fkGrade, 1),
-      label: gradeLabel(fkGrade),
+      grade: fkRounded,
+      label: gradeLabel(fkRounded),
     },
     colemanLiau: {
-      grade: round(clGrade, 1),
-      label: gradeLabel(clGrade),
+      grade: clRounded,
+      label: gradeLabel(clRounded),
     },
     fleschReadingEase: {
-      score: round(freScore, 1),
-      label: readingEaseLabel(freScore),
+      score: freRounded,
+      label: readingEaseLabel(freRounded),
     },
   };
 }
