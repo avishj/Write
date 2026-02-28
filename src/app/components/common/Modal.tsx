@@ -3,6 +3,7 @@ import {
   useRef,
   useCallback,
   useId,
+  type MouseEvent,
   type ReactNode,
 } from "react";
 
@@ -39,7 +40,7 @@ export function Modal({ open, onClose, title, children }: ModalProps) {
 
   // Close on backdrop click
   const handleBackdropClick = useCallback(
-    (e: React.MouseEvent<HTMLDialogElement>) => {
+    (e: MouseEvent<HTMLDialogElement>) => {
       if (e.target === dialogRef.current) {
         onClose();
       }
