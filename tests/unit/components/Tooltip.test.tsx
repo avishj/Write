@@ -84,23 +84,31 @@ describe("Tooltip", () => {
     expect(screen.getByText("Keyboard tip")).toBeDefined();
   });
 
-  it("supports different sides", () => {
-    const { rerender } = render(
-      <Tooltip content="Top tip" side="top" delay={0}>
-        <button>Target</button>
-      </Tooltip>,
-    );
-    // Verify component renders without error for each side
-    rerender(
-      <Tooltip content="Left tip" side="left" delay={0}>
-        <button>Target</button>
-      </Tooltip>,
-    );
-    rerender(
-      <Tooltip content="Right tip" side="right" delay={0}>
-        <button>Target</button>
-      </Tooltip>,
-    );
-    // No errors thrown — sides are valid
+  it("supports different sides", async () => {
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+
+    const sides = ["top", "left", "right"] as const;
+    const expectedStyles: Record<string, string> = {
+      top: "bottom",
+      left: "right",
+      right: "left",
+    };
+
+    for (const side of sides) {
+      cleanup();
+      render(
+        <Tooltip content={`${side} tip`} side={side} delay={0}>
+          <button>Target</button>
+        </Tooltip>,
+      );
+      await user.hover(screen.getByText("Target"));
+      act(() => {
+        vi.advanceTimersByTime(0);
+      });
+      const tooltip = screen.getByRole("tooltip");
+      expect(tooltip).toBeInTheDocument();
+      expect(tooltip.style[expectedStyles[side] as never]).toBe("100%");
+      await user.unhover(screen.getByText("Target"));
+    }
   });
 });
