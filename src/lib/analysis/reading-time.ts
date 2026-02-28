@@ -24,6 +24,10 @@ export function estimateReadingTime(
     return { minutes: 0, label: "< 1 min read" };
   }
 
+  if (wpm <= 0) {
+    throw new RangeError("wpm must be greater than 0");
+  }
+
   const raw = wordCount / wpm;
 
   // Very short texts (under ~15 seconds of reading): show "< 1 min"

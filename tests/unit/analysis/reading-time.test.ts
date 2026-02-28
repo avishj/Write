@@ -50,5 +50,13 @@ describe("reading-time", () => {
       const result = estimateReadingTime(5, 250);
       expect(result.label).toBe("< 1 min read");
     });
+
+    it("throws RangeError when wpm is 0", () => {
+      expect(() => estimateReadingTime(100, 0)).toThrow(RangeError);
+    });
+
+    it("throws RangeError when wpm is negative", () => {
+      expect(() => estimateReadingTime(100, -1)).toThrow(RangeError);
+    });
   });
 });
