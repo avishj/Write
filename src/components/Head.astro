@@ -29,7 +29,9 @@ const ogImage = new URL("/og-image.png", canonicalUrl).href;
             return;
           }
         }
-      } catch (e) {}
+      } catch (_e) {
+        // localStorage may be unavailable or contain invalid JSON
+      }
       // Fall back to system preference
       var prefersDark =
         window.matchMedia &&

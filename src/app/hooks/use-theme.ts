@@ -2,7 +2,6 @@ import { useCallback, useSyncExternalStore } from "react";
 import {
   type StorageBackend,
   THEME_STORAGE_KEY,
-  defaultSettings,
   loadSettings,
   saveSetting,
 } from "@lib/persistence/settings";
