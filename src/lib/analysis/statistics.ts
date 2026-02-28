@@ -5,7 +5,7 @@
  * tokenization as counter.ts for consistency.
  */
 
-import { countSentences, countWords } from "./counter";
+import { countSentences, countWords } from "@lib/analysis/counter";
 
 export interface TextStatistics {
   avgWordLength: number;

@@ -8,7 +8,7 @@
  * Pure function, no side effects.
  */
 
-import { countParagraphs, countWords } from "./counter";
+import { countParagraphs, countWords } from "@lib/analysis/counter";
 
 export interface OverflowResult {
   isOver: boolean;

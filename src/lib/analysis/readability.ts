@@ -13,7 +13,7 @@ import { flesch } from "flesch";
 import { fleschKincaid } from "flesch-kincaid";
 import { syllable } from "syllable";
 
-import { countSentences, countWords } from "./counter";
+import { countSentences, countWords } from "@lib/analysis/counter";
 
 export interface ReadabilityResult {
   fleschKincaid: { grade: number; label: string };
