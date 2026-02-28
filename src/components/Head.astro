@@ -1,0 +1,92 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = "Write — A precision instrument for measuring your text.",
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? "https://write.avish.dev");
+const ogImage = new URL("/og-image.png", canonicalUrl).href;
+---
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Blocking script: apply data-theme before first paint to prevent flash -->
+  <script is:inline>
+    (function () {
+      try {
+        var stored = localStorage.getItem("write-theme");
+        if (stored) {
+          var theme = JSON.parse(stored);
+          if (theme === "dark" || theme === "light") {
+            document.documentElement.setAttribute("data-theme", theme);
+            return;
+          }
+        }
+      } catch (_e) {
+        // localStorage may be unavailable or contain invalid JSON
+      }
+      // Fall back to system preference
+      var prefersDark =
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.setAttribute(
+        "data-theme",
+        prefersDark ? "dark" : "light",
+      );
+    })();
+  </script>
+
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalUrl.href} />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- Font preloads (critical WOFF2 files) -->
+  <link
+    rel="preload"
+    href="/fonts/dm-sans-latin-variable.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin
+  />
+  <link
+    rel="preload"
+    href="/fonts/fraunces-latin-variable.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin
+  />
+  <link
+    rel="preload"
+    href="/fonts/ibm-plex-mono-latin-regular.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin
+  />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonicalUrl.href} />
+  <meta property="og:image" content={ogImage} />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
+
+  <!-- Theme color (dark default) -->
+  <meta name="theme-color" content="#0e0e13" />
+
+  <title>{title}</title>
+</head>

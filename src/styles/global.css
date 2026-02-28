@@ -1,1 +1,144 @@
 @import "tailwindcss";
+@import "./fonts.css";
+
+/*
+ * Tailwind v4 theme — expose font families as utilities
+ * e.g. font-display, font-ui, font-mono
+ */
+@theme {
+  --font-display: "Fraunces", Georgia, serif;
+  --font-ui: "DM Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+/*
+ * Color tokens — dark mode (default)
+ */
+:root,
+[data-theme="dark"] {
+  /* Backgrounds */
+  --bg-base: #0e0e13;
+  --bg-surface: #16161e;
+  --bg-elevated: #1e1e28;
+  --bg-overlay: #26263240;
+
+  /* Text */
+  --text-primary: #e8e4dc;
+  --text-secondary: #86828a;
+  --text-tertiary: #56525a;
+
+  /* Accent */
+  --accent: #c4956a;
+  --accent-hover: #d4a87e;
+  --accent-muted: #c4956a20;
+  --selection: #c4956a40;
+
+  /* Semantic */
+  --success: #6a9e7e;
+  --success-muted: #6a9e7e18;
+  --warning: #c9a84e;
+  --warning-muted: #c9a84e18;
+  --error: #c9484a;
+  --error-muted: #c9484a15;
+
+  /* Borders */
+  --border: #2a2a36;
+  --border-subtle: #20202a;
+
+  /* Decorative */
+  --grid-line: #1a1a2408;
+  --ruler: #2a2a36;
+}
+
+/*
+ * Color tokens — light mode
+ */
+[data-theme="light"] {
+  /* Backgrounds */
+  --bg-base: #f8f5f0;
+  --bg-surface: #ffffff;
+  --bg-elevated: #f0ece4;
+  --bg-overlay: #1a1a2440;
+
+  /* Text */
+  --text-primary: #1a1a24;
+  --text-secondary: #6a6670;
+  --text-tertiary: #a09ca4;
+
+  /* Accent */
+  --accent: #8b5e3c;
+  --accent-hover: #a06e4a;
+  --accent-muted: #8b5e3c12;
+  --selection: #8b5e3c30;
+
+  /* Semantic */
+  --success: #3d7a56;
+  --success-muted: #3d7a5612;
+  --warning: #9a7e2e;
+  --warning-muted: #9a7e2e12;
+  --error: #b83a3c;
+  --error-muted: #b83a3c10;
+
+  /* Borders */
+  --border: #e0dbd3;
+  --border-subtle: #ece8e0;
+
+  /* Decorative */
+  --grid-line: #d0cab806;
+  --ruler: #d8d2c8;
+}
+
+/*
+ * Base styles
+ */
+html {
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+}
+
+/*
+ * Grid paper texture — subtle repeating background
+ */
+.grid-paper {
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/*
+ * Accessibility — disable animations for users who prefer reduced motion
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/*
+ * Focus visible — consistent focus ring
+ */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/*
+ * Selection — themed text selection
+ */
+::selection {
+  background-color: var(--selection);
+  color: var(--text-primary);
+}

@@ -10,6 +10,8 @@ export default defineConfig({
     },
   },
   test: {
+    environment: "jsdom",
+    setupFiles: ["tests/setup.ts"],
     restoreMocks: true,
     include: ["tests/unit/**/*.test.{ts,tsx}"],
     coverage: {
@@ -27,6 +29,8 @@ export default defineConfig({
         "**/*.d.ts",
         "src/env.d.ts",
         "src/pages/**",
+        "src/components/**/*.astro",
+        "src/app/providers/ThemeProvider.tsx",
       ],
     },
   },
