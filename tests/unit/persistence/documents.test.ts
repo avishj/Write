@@ -6,9 +6,7 @@ import {
   type StoredDocument,
 } from "@tests/fixtures/documents";
 
-/**
- * TDD — implementation does not exist yet.
- */
+import { resetDB } from "@lib/persistence/db";
 import {
   deleteDocument,
   getAllDocuments,
@@ -22,7 +20,8 @@ describe("document persistence", () => {
   });
 
   afterEach(async () => {
-    // Clean up IndexedDB between tests
+    // Close singleton connection then delete databases
+    await resetDB();
     const dbs = await indexedDB.databases();
     for (const db of dbs) {
       if (db.name) indexedDB.deleteDatabase(db.name);

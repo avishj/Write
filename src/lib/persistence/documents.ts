@@ -1,7 +1,7 @@
 /**
  * Document CRUD operations backed by IndexedDB.
  *
- * Each function opens and closes its own DB connection.
+ * Uses the shared singleton DB connection from db.ts.
  */
 
 import { openDB, type StoredDocument } from "@lib/persistence/db";
@@ -9,13 +9,9 @@ import { openDB, type StoredDocument } from "@lib/persistence/db";
 /** Retrieve all documents, ordered by updatedAt descending. */
 export async function getAllDocuments(): Promise<StoredDocument[]> {
   const db = await openDB();
-  try {
-    const all = await db.getAllFromIndex("documents", "by-updated");
-    // getAllFromIndex returns ascending by index; reverse for newest-first
-    return all.reverse();
-  } finally {
-    db.close();
-  }
+  const all = await db.getAllFromIndex("documents", "by-updated");
+  // getAllFromIndex returns ascending by index; reverse for newest-first
+  return all.reverse();
 }
 
 /** Retrieve a single document by id. Returns undefined if not found. */
@@ -23,11 +19,7 @@ export async function getDocument(
   id: string,
 ): Promise<StoredDocument | undefined> {
   const db = await openDB();
-  try {
-    return await db.get("documents", id);
-  } finally {
-    db.close();
-  }
+  return db.get("documents", id);
 }
 
 /**
@@ -36,19 +28,11 @@ export async function getDocument(
  */
 export async function saveDocument(doc: StoredDocument): Promise<void> {
   const db = await openDB();
-  try {
-    await db.put("documents", doc);
-  } finally {
-    db.close();
-  }
+  await db.put("documents", doc);
 }
 
 /** Delete a document by id. No-op if the document doesn't exist. */
 export async function deleteDocument(id: string): Promise<void> {
   const db = await openDB();
-  try {
-    await db.delete("documents", id);
-  } finally {
-    db.close();
-  }
+  await db.delete("documents", id);
 }

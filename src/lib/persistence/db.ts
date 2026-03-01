@@ -60,27 +60,50 @@ export interface WriteDBSchema extends DBSchema {
 const DB_NAME = "write-db";
 const DB_VERSION = 1;
 
+/** Cached database connection promise (singleton). */
+let dbPromise: Promise<IDBPDatabase<WriteDBSchema>> | null = null;
+
 /**
- * Open (or create) the write-db database.
+ * Get the shared write-db connection.
  *
- * On first open (or version upgrade), creates the object stores and indexes.
- * Migrations are sequential: each version bump has its own block.
+ * On first call, opens the database and runs migrations.
+ * Subsequent calls return the cached promise. The connection
+ * is long-lived — IndexedDB connections are designed to stay open.
  */
 export function openDB(): Promise<IDBPDatabase<WriteDBSchema>> {
-  return idbOpenDB<WriteDBSchema>(DB_NAME, DB_VERSION, {
-    upgrade(db, oldVersion) {
-      // v0 → v1: initial schema
-      if (oldVersion < 1) {
-        const docStore = db.createObjectStore("documents", { keyPath: "id" });
-        docStore.createIndex("by-updated", "updatedAt");
+  if (!dbPromise) {
+    dbPromise = idbOpenDB<WriteDBSchema>(DB_NAME, DB_VERSION, {
+      upgrade(db, oldVersion) {
+        // v0 → v1: initial schema
+        if (oldVersion < 1) {
+          const docStore = db.createObjectStore("documents", {
+            keyPath: "id",
+          });
+          docStore.createIndex("by-updated", "updatedAt");
 
-        const verStore = db.createObjectStore("versions", { keyPath: "id" });
-        verStore.createIndex("by-document", "documentId");
-        verStore.createIndex("by-created", "createdAt");
-      }
+          const verStore = db.createObjectStore("versions", {
+            keyPath: "id",
+          });
+          verStore.createIndex("by-document", "documentId");
+          verStore.createIndex("by-created", "createdAt");
+        }
 
-      // Future migrations go here:
-      // if (oldVersion < 2) { ... }
-    },
-  });
+        // Future migrations go here:
+        // if (oldVersion < 2) { ... }
+      },
+    });
+  }
+  return dbPromise;
+}
+
+/**
+ * Close the cached connection and clear the singleton.
+ * Used in tests to ensure a fresh database after IndexedDB cleanup.
+ */
+export async function resetDB(): Promise<void> {
+  if (dbPromise) {
+    const db = await dbPromise;
+    db.close();
+    dbPromise = null;
+  }
 }

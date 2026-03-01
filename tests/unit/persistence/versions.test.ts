@@ -6,9 +6,7 @@ import {
   type StoredVersion,
 } from "@tests/fixtures/documents";
 
-/**
- * TDD — implementation does not exist yet.
- */
+import { resetDB } from "@lib/persistence/db";
 import {
   deleteVersion,
   getVersions,
@@ -22,6 +20,7 @@ describe("version persistence", () => {
   });
 
   afterEach(async () => {
+    await resetDB();
     const dbs = await indexedDB.databases();
     for (const db of dbs) {
       if (db.name) indexedDB.deleteDatabase(db.name);

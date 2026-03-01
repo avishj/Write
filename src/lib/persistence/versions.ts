@@ -4,6 +4,8 @@
  * Versions are snapshots of document content at a point in time.
  * Auto-save versions are pruned when they exceed a limit;
  * manual (named) versions are never auto-pruned.
+ *
+ * Uses the shared singleton DB connection from db.ts.
  */
 
 import { openDB, type StoredVersion } from "@lib/persistence/db";
@@ -16,33 +18,21 @@ export async function getVersions(
   documentId: string,
 ): Promise<StoredVersion[]> {
   const db = await openDB();
-  try {
-    const all = await db.getAllFromIndex("versions", "by-document", documentId);
-    // Sort by createdAt descending (newest first)
-    return all.sort((a, b) => b.createdAt - a.createdAt);
-  } finally {
-    db.close();
-  }
+  const all = await db.getAllFromIndex("versions", "by-document", documentId);
+  // Sort by createdAt descending (newest first)
+  return all.sort((a, b) => b.createdAt - a.createdAt);
 }
 
 /** Save a version record. Uses `put` (insert or replace by primary key). */
 export async function saveVersion(version: StoredVersion): Promise<void> {
   const db = await openDB();
-  try {
-    await db.put("versions", version);
-  } finally {
-    db.close();
-  }
+  await db.put("versions", version);
 }
 
 /** Delete a single version by id. No-op if the version doesn't exist. */
 export async function deleteVersion(id: string): Promise<void> {
   const db = await openDB();
-  try {
-    await db.delete("versions", id);
-  } finally {
-    db.close();
-  }
+  await db.delete("versions", id);
 }
 
 /**
@@ -60,27 +50,23 @@ export async function pruneAutoVersions(
   maxCount: number,
 ): Promise<void> {
   const db = await openDB();
-  try {
-    const tx = db.transaction("versions", "readwrite");
-    const index = tx.objectStore("versions").index("by-document");
-    const all = await index.getAll(documentId);
+  const tx = db.transaction("versions", "readwrite");
+  const index = tx.objectStore("versions").index("by-document");
+  const all = await index.getAll(documentId);
 
-    const autoVersions = all
-      .filter((v) => v.type === "auto")
-      .sort((a, b) => a.createdAt - b.createdAt); // oldest first
+  const autoVersions = all
+    .filter((v) => v.type === "auto")
+    .sort((a, b) => a.createdAt - b.createdAt); // oldest first
 
-    const toDelete = autoVersions.length - maxCount;
-    if (toDelete <= 0) {
-      await tx.done;
-      return;
-    }
-
-    const store = tx.objectStore("versions");
-    for (let i = 0; i < toDelete; i++) {
-      await store.delete(autoVersions[i].id);
-    }
+  const toDelete = autoVersions.length - maxCount;
+  if (toDelete <= 0) {
     await tx.done;
-  } finally {
-    db.close();
+    return;
   }
+
+  const store = tx.objectStore("versions");
+  for (let i = 0; i < toDelete; i++) {
+    await store.delete(autoVersions[i].id);
+  }
+  await tx.done;
 }

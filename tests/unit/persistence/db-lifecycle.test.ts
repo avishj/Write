@@ -6,7 +6,7 @@ import {
   resetFixtureCounters,
 } from "@tests/fixtures/documents";
 
-import { openDB } from "@lib/persistence/db";
+import { openDB, resetDB } from "@lib/persistence/db";
 import {
   deleteDocument,
   getAllDocuments,
@@ -26,6 +26,7 @@ describe("db lifecycle", () => {
   });
 
   afterEach(async () => {
+    await resetDB();
     const dbs = await indexedDB.databases();
     for (const db of dbs) {
       if (db.name) indexedDB.deleteDatabase(db.name);
@@ -35,22 +36,18 @@ describe("db lifecycle", () => {
   describe("fresh database creation", () => {
     it("creates all object stores and indexes", async () => {
       const db = await openDB();
-      try {
-        expect(db.objectStoreNames.contains("documents")).toBe(true);
-        expect(db.objectStoreNames.contains("versions")).toBe(true);
+      expect(db.objectStoreNames.contains("documents")).toBe(true);
+      expect(db.objectStoreNames.contains("versions")).toBe(true);
 
-        // Verify indexes exist by opening a transaction
-        const tx = db.transaction(["documents", "versions"], "readonly");
-        const docStore = tx.objectStore("documents");
-        const verStore = tx.objectStore("versions");
+      // Verify indexes exist by opening a transaction
+      const tx = db.transaction(["documents", "versions"], "readonly");
+      const docStore = tx.objectStore("documents");
+      const verStore = tx.objectStore("versions");
 
-        expect(docStore.indexNames.contains("by-updated")).toBe(true);
-        expect(verStore.indexNames.contains("by-document")).toBe(true);
-        expect(verStore.indexNames.contains("by-created")).toBe(true);
-        await tx.done;
-      } finally {
-        db.close();
-      }
+      expect(docStore.indexNames.contains("by-updated")).toBe(true);
+      expect(verStore.indexNames.contains("by-document")).toBe(true);
+      expect(verStore.indexNames.contains("by-created")).toBe(true);
+      await tx.done;
     });
 
     it("starts with empty stores", async () => {
