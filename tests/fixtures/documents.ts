@@ -21,7 +21,7 @@ export function makeDocument(
     content: overrides?.content ?? "",
     createdAt: overrides?.createdAt ?? now,
     updatedAt: overrides?.updatedAt ?? now,
-    ...("limit" in (overrides ?? {}) ? { limit: overrides!.limit } : {}),
+    ...(overrides?.limit !== undefined ? { limit: overrides.limit } : {}),
   };
 }
 
